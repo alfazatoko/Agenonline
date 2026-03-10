@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>Alfaza Cell - Android</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root { 
+            --blue: #5d9cec; 
+            --green: #7cc386; 
+            --bg: #f5f7fb; 
+            --text: #333; 
+            --primary: #2b67f6; 
+            --orange: #f39c12; 
+            --red: #e74c3c; 
+            --dark: #34495e; 
+            --soft-gray: #f4f6f8;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 0; 
+            color: var(--text);
+        }
+        
+        .container { 
+            max-width: 450px; 
+            margin: 0 auto; 
+            padding: 10px; 
+            padding-bottom: 80px; 
+        }
+
+        /* LOGIN PAGE */
+        #page-login { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background: var(--primary); 
+            z-index: 9999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        
+        .login-box { 
+            background: white; 
+            padding: 30px 25px; 
+            border-radius: 30px; 
+            width: 100%; 
+            max-width: 340px; 
+            text-align: center; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .login-box h2 { 
+            color: var(--primary); 
+            margin: 0 0 25px; 
+            font-size: 28px;
+        }
+        
+        .login-box select,
+        .login-box input { 
+            width: 100%; 
+            padding: 16px; 
+            margin-bottom: 15px; 
+            border-radius: 15px; 
+            border: 1px solid #e0e0e0; 
+            outline: none; 
+            font-weight: 600; 
+            font-size: 16px;
+            background: #f8f9fa;
+        }
+        
+        .btn-login { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 15px; 
+            font-weight: bold; 
+            font-size: 16px;
+            cursor: pointer; 
+            margin-top: 10px;
+        }
+    
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+
+
+<style>
+        /* HEADER */
+        .header { 
+            background: white; 
+            padding: 15px; 
+            border-radius: 0 0 25px 25px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px;
+        }
+        
+        .header-left { 
+            font-size: 11px; 
+            color: #666; 
+        }
+        
+        .header-left b { 
+            color: var(--primary); 
+            font-size: 12px; 
+            display: block; 
+        }
+        
+        .header-center { 
+            text-align: center; 
+        }
+        
+        .shop-name { 
+            color: var(--dark); 
+            font-size: 20px; 
+            font-weight: 800; 
+            display: block;
+            line-height: 1.2;
+        }
+        
+        .shop-date { 
+            font-size: 11px; 
+            color: #888; 
+            display: block;
+            margin-top: 2px;
+        }
+        
+        .header-right { 
+            text-align: right; 
+            font-size: 11px; 
+            color: #666; 
+        }
+        
+        .header-right b { 
+            color: var(--orange); 
+            font-size: 12px; 
+            display: block; 
+        }
+        
+        .time-display { 
+            font-size: 13px; 
+            font-weight: bold; 
+            color: var(--dark); 
+        }
+
+        /* SALDO CARD */
+        .saldo-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 15px; 
+        }
+        
+        .saldo-card { 
+            padding: 20px; 
+            border-radius: 22px; 
+            color: white; 
+        }
+        
+        .saldo-card span { 
+            font-size: 12px; 
+            opacity: 0.9; 
+            display: block; 
+            margin-bottom: 5px;
+        }
+        
+        .saldo-card p { 
+            margin: 0; 
+            font-size: 20px; 
+            font-weight: bold; 
+        }
+        
+        .bg-blue { 
+            background: linear-gradient(145deg, #5d9cec, #4a89dc); 
+        }
+        
+        .bg-green { 
+            background: linear-gradient(145deg, #7cc386, #62af6d); 
+        }
+        
+        /* STATS MINI */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        .stat-card { 
+            background: white; 
+            padding: 12px 5px; 
+            border-radius: 18px; 
+            text-align: center; 
+            border: 1px solid #eee; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        
+        .stat-card span { 
+            font-size: 10px; 
+            color: #888; 
+            display: block; 
+            margin-bottom: 4px;
+        }
+        
+        .stat-card b { 
+            font-size: 14px; 
+            color: var(--dark); 
+        }
+
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+
+
+
+<style>
+        /* KATEGORI */
+        .category-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        .category-btn { 
+            background: white; 
+            border: 1px solid #eee; 
+            padding: 15px 5px; 
+            border-radius: 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        
+        .category-btn.active { 
+            background: var(--primary); 
+            color: white; 
+            border-color: var(--primary); 
+        }
+        
+        .category-btn i { 
+            display: block; 
+            font-size: 22px; 
+            margin-bottom: 6px; 
+        }
+        
+        .category-btn span { 
+            font-size: 11px; 
+            font-weight: 600; 
+        }
+
+        /* FORM */
+        .form-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 25px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
+        }
+        
+        .input-group { 
+            display: flex; 
+            align-items: center; 
+            background: var(--soft-gray); 
+            border-radius: 16px; 
+            padding: 14px; 
+            margin-bottom: 12px; 
+            border: 1px solid #eee; 
+        }
+        
+        .input-group input { 
+            border: none; 
+            background: transparent; 
+            width: 100%; 
+            outline: none; 
+            font-size: 15px; 
+            font-weight: 600; 
+        }
+        
+        .btn-save {
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 18px; 
+            font-weight: bold; 
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* PAGE */
+        .page { 
+            display: none; 
+        }
+        
+        .page.active { 
+            display: block; 
+        }
+
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+
+
+
+<style>
+        /* FILTER */
+        .filter-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
+            margin-bottom: 15px; 
+        }
+        
+        .filter-btn { 
+            background: white; 
+            border: 1px solid #ddd; 
+            padding: 10px 5px; 
+            border-radius: 12px; 
+            font-size: 10px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            text-align: center; 
+            color: #666;
+        }
+        
+        .filter-btn.active { 
+            background: var(--primary); 
+            color: white; 
+            border-color: var(--primary); 
+        }
+
+        /* SECTION TITLE */
+        .section-title { 
+            background: var(--dark); 
+            color: white; 
+            padding: 10px 15px; 
+            font-size: 12px; 
+            font-weight: bold; 
+            border-radius: 12px 12px 0 0; 
+            margin-top: 20px; 
+        }
+
+        /* TABLE */
+        .history-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white; 
+            font-size: 12px; 
+            margin-bottom: 15px; 
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+        }
+        
+        .history-table th { 
+            background: #f0f2f5; 
+            padding: 12px; 
+            text-align: left; 
+            border-bottom: 1px solid #ddd; 
+        }
+        
+        .history-table td { 
+            padding: 12px; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
+
+        /* TOTAL BOX */
+        .total-box { 
+            background: white; 
+            border-radius: 18px; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border: 1px solid #eee; 
+        }
+        
+        .total-row { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 0; 
+            border-bottom: 1px dashed #eee; 
+        }
+        
+        .total-row:last-child { 
+            border-bottom: none; 
+        }
+        
+        .total-label { 
+            font-weight: 600; 
+            color: #666; 
+            font-size: 13px; 
+        }
+        
+        .total-value { 
+            font-weight: bold; 
+            color: var(--dark); 
+        }
+        
+        .total-value.primary { 
+            color: var(--primary); 
+        }
+        
+        .total-value.green { 
+            color: var(--green); 
+        }
+
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+
+
+
+
+<style>
+        /* NAVBAR */
+        .navbar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background: white; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 10px 0 15px; 
+            border-top: 1px solid #eee; 
+            z-index: 1000; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+        }
+        
+        .nav-item { 
+            text-align: center; 
+            color: #aaa; 
+            cursor: pointer; 
+            flex: 1; 
+            border: none; 
+            background: none; 
+            font-size: 11px;
+        }
+        
+        .nav-item.active { 
+            color: var(--primary); 
+        }
+        
+        .nav-item i { 
+            font-size: 22px; 
+            display: block; 
+            margin-bottom: 4px; 
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 300px;
+            border-radius: 25px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .modal-content.wide {
+            width: 320px;
+        }
+        
+        .modal-title {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .modal-btn.blue { background: var(--blue); color: white; }
+        .modal-btn.green { background: var(--green); color: white; }
+        .modal-btn.gray { background: #f0f0f0; color: #666; }
+        
+        .modal-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            margin: 10px 0 20px;
+            text-align: center;
+        }
+        
+        .modal-button-group {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .modal-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        .modal-button.red { background: var(--red); color: white; }
+        .modal-button.green { background: var(--green); color: white; }
+
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+
+
+
+<style>
+        /* LAPORAN */
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+        
+        .report-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        
+        .report-total-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            margin: 15px -18px -18px;
+            padding: 18px;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .report-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .report-total-label {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .report-total-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .report-footer {
+            font-size: 10px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* ACTION BUTTONS */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .btn-orange { background: var(--orange); color: white; }
+        .btn-green { background: #4CAF50; color: white; }
+        .btn-red { background: var(--red); color: white; }
+    
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="page-login">
+    <div class="login-box">
+        <h2>ALFAZA CELL</h2>
+        <select id="l-user">
+            <option value="KASIR 01">KASIR 01</option>
+            <option value="KASIR 02">KASIR 02</option>
+        </select>
+        <input type="password" id="l-pin" placeholder="PIN" inputmode="numeric">
+        <button class="btn-login" onclick="prosesLogin()">MASUK</button>
+    </div>
+</div>
+
+
+
+<!-- MAIN APP -->
+<div id="main-app" style="display:none">
+    <div class="header">
+        <div class="header-left">
+            Kasir: <b id="disp-user">-</b>
+            Shift: <b id="disp-shift">-</b>
+        </div>
+        <div class="header-center">
+            <span class="shop-name">ALFAZA CELL</span>
+            <span class="shop-date" id="disp-tgl-header">-</span>
+        </div>
+        <div class="header-right">
+            <div style="font-size:12px;font-weight:600;">ABSENSI</div>
+            <b id="disp-login">--:--</b>
+            <span class="time-display" id="disp-jam-jalan">00:00</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="page-home" class="page active">
+            <div class="saldo-grid">
+                <div class="saldo-card bg-blue">
+                    <span>Saldo Bank</span>
+                    <p id="s-bank">Rp 0</p>
+                </div>
+                <div class="saldo-card bg-green">
+                    <span>Saldo Cash</span>
+                    <p id="s-cash">Rp 0</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card"><span>Tarik</span><b id="s-tarik">0</b></div>
+                <div class="stat-card"><span>Aksesoris</span><b id="s-aks">0</b></div>
+                <div class="stat-card"><span>Admin</span><b id="s-admin" style="color:var(--orange)">0</b></div>
+            </div>
+
+            <div class="category-grid">
+                <div class="category-btn active" onclick="pilihKat('BANK', this)"><i class="fa-solid fa-university"></i><span>Bank</span></div>
+                <div class="category-btn" onclick="pilihKat('FLIP', this)"><i class="fa-solid fa-repeat"></i><span>Flip</span></div>
+                <div class="category-btn" onclick="pilihKat('APP PULSA', this)"><i class="fa-solid fa-mobile-button"></i><span>App</span></div>
+                <div class="category-btn" onclick="pilihKat('DANA', this)"><i class="fa-solid fa-paper-plane"></i><span>Dana</span></div>
+                <div class="category-btn" onclick="pilihKat('TARIK TUNAI', this)"><i class="fa-solid fa-money-bill-1"></i><span>Tarik</span></div>
+                <div class="category-btn" onclick="pilihKat('AKSESORIS', this)"><i class="fa-solid fa-headset"></i><span>Aks</span></div>
+            </div>
+
+            <div class="form-card">
+                <div class="input-group"><input type="text" id="t-nom" placeholder="Nominal" inputmode="numeric" onkeyup="fmt(this)"></div>
+                <div class="input-group"><input type="text" id="t-adm" placeholder="Admin" inputmode="numeric" onkeyup="fmt(this)"></div>
+                <div class="input-group"><input type="text" id="t-ket" placeholder="Keterangan"></div>
+                <button class="btn-save" onclick="simpanTr()">SIMPAN TRANSAKSI</button>
+            </div>
+        </div>
+
+        <!-- HISTORY PAGE -->
+        <div id="page-history" class="page">
+            <div style="display:flex; gap:8px; margin-bottom:15px;">
+                <input type="date" id="f-tgl" style="flex:1; padding:12px; border-radius:15px; border:1px solid #ddd;" onchange="filterRiwayat()">
+                <input type="text" id="f-cari" placeholder="Cari..." style="flex:1; padding:12px; border-radius:15px; border:1px solid #ddd;" onkeyup="filterRiwayat()">
+            </div>
+
+            <div class="filter-grid" id="filter-transaksi">
+                <div class="filter-btn active" data-filter="all" onclick="filterKategori('all', this)">Semua</div>
+                <div class="filter-btn" data-filter="BANK" onclick="filterKategori('BANK', this)">Bank</div>
+                <div class="filter-btn" data-filter="FLIP" onclick="filterKategori('FLIP', this)">Flip</div>
+                <div class="filter-btn" data-filter="APP PULSA" onclick="filterKategori('APP PULSA', this)">App</div>
+                <div class="filter-btn" data-filter="DANA" onclick="filterKategori('DANA', this)">Dana</div>
+                <div class="filter-btn" data-filter="TARIK TUNAI" onclick="filterKategori('TARIK TUNAI', this)">Tarik</div>
+                <div class="filter-btn" data-filter="AKSESORIS" onclick="filterKategori('AKSESORIS', this)">Aks</div>
+            </div>
+
+            <div class="section-title">RIWAYAT TRANSAKSI</div>
+            <table class="history-table">
+                <thead><tr><th>Jam</th><th>Tipe</th><th>Nominal</th><th>Adm</th></tr></thead>
+                <tbody id="list-riwayat"></tbody>
+            </table>
+
+            <div class="section-title">RIWAYAT TAMBAH SALDO</div>
+            <div class="filter-grid" id="filter-tambahsaldo">
+                <div class="filter-btn active" data-filter-ts="all" onclick="filterTambahSaldo('all', this)">Semua</div>
+                <div class="filter-btn" data-filter-ts="Bank" onclick="filterTambahSaldo('Bank', this)">Bank</div>
+                <div class="filter-btn" data-filter-ts="Cash" onclick="filterTambahSaldo('Cash', this)">Cash</div>
+            </div>
+            <table class="history-table">
+                <thead><tr><th>Jam</th><th>Jenis</th><th>Nominal</th></tr></thead>
+                <tbody id="list-tambah-saldo"></tbody>
+            </table>
+        </div>
+
+
+
+        <!-- REPORT PAGE -->
+        <div id="page-report" class="page">
+            <div id="rep-area"></div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="nav-item active" onclick="bukaPage('home', this)"><i class="fa-solid fa-home"></i> Beranda</div>
+        <div class="nav-item" onclick="bukaPage('history', this)"><i class="fa-solid fa-list-ul"></i> Riwayat</div>
+        <div class="nav-item" onclick="bukaMenuSaldo()" style="color:var(--green)"><i class="fa-solid fa-circle-plus"></i> +Saldo</div>
+        <div class="nav-item" onclick="bukaPage('report', this)"><i class="fa-solid fa-chart-pie"></i> Laporan</div>
+        <div class="nav-item" onclick="logout()" style="color:var(--red)"><i class="fa-solid fa-sign-out-alt"></i> Keluar</div>
+    </div>
+</div>
+
+<!-- MODAL SALDO -->
+<div id="modalPilihSaldo" class="modal" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-title">Pilih Jenis Saldo</div>
+        <button class="modal-btn blue" onclick="pilihJenisSaldo('Bank')"><i class="fa-solid fa-university"></i> Tambah Bank</button>
+        <button class="modal-btn green" onclick="pilihJenisSaldo('Cash')"><i class="fa-solid fa-money-bill-wave"></i> Tambah Cash</button>
+        <button class="modal-btn gray" onclick="tutupModalPilihSaldo()">Batal</button>
+    </div>
+</div>
+
+<div id="modalTambahSaldo" class="modal" style="display:none;">
+    <div class="modal-content wide">
+        <div class="modal-title" id="modalTitle">Tambah Saldo Bank</div>
+        <input type="text" class="modal-input" id="modalInput" placeholder="Masukkan nominal" inputmode="numeric">
+        <div class="modal-button-group">
+            <button class="modal-button red" id="modalBatal">Batal</button>
+            <button class="modal-button green" id="modalOke">Oke</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==================== DATA INIT ====================
+    let mainDB = JSON.parse(localStorage.getItem('alfaza_v14_4')) || { 
+        "KASIR 01": { bank:0, cash:0, tarik:0, aks:0, admin:0, loginTime: "", tr:[], ts:[] },
+        "KASIR 02": { bank:0, cash:0, tarik:0, aks:0, admin:0, loginTime: "", tr:[], ts:[] }
+    };
+    let currentUser = "", db = null, katAktif = 'BANK';
+    let tambahSaldoJenis = 'Bank';
+    let filterKategoriAktif = 'all', filterTambahSaldoAktif = 'all';
+
+    // ==================== LOGIN ====================
+    function prosesLogin() {
+        const u = document.getElementById('l-user').value;
+        const p = document.getElementById('l-pin').value;
+        const pins = { "KASIR 01": "1212", "KASIR 02": "2323" };
+        
+        if (pins[u] === p) {
+            currentUser = u; db = mainDB[u];
+            if (!db.loginTime) db.loginTime = new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+            
+            document.getElementById('page-login').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('disp-user').innerText = currentUser;
+            document.getElementById('disp-login').innerText = db.loginTime;
+            document.getElementById('f-tgl').valueAsDate = new Date();
+            
+            const jamNow = new Date().getHours();
+            document.getElementById('disp-shift').innerText = (jamNow >= 6 && jamNow < 15) ? "Pagi" : "Malam";
+            
+            initEvents();
+            refresh();
+        } else { alert("PIN SALAH!"); }
+    }
+
+    // ==================== INIT EVENTS ====================
+    function initEvents() {
+        const inpNom = document.getElementById('t-nom');
+        const inpAdm = document.getElementById('t-adm');
+        const inpKet = document.getElementById('t-ket');
+        
+        if(inpNom) inpNom.addEventListener('keypress', e => { if(e.key=='Enter'){ e.preventDefault(); inpAdm.focus(); }});
+        if(inpAdm) inpAdm.addEventListener('keypress', e => { if(e.key=='Enter'){ e.preventDefault(); inpKet.focus(); }});
+        if(inpKet) inpKet.addEventListener('keypress', e => { if(e.key=='Enter'){ e.preventDefault(); simpanTr(); }});
+        
+        const modalInput = document.getElementById('modalInput');
+        if(modalInput) {
+            modalInput.addEventListener('keyup', e => { e.target.value = formatAngka(e.target.value); });
+            modalInput.addEventListener('keypress', e => { if(e.key=='Enter'){ e.preventDefault(); prosesTambahSaldo(); }});
+        }
+        document.getElementById('modalBatal').onclick = tutupModalTambahSaldo;
+        document.getElementById('modalOke').onclick = prosesTambahSaldo;
+    }
+
+    // ==================== UTILITY ====================
+    setInterval(() => { 
+        const d = new Date();
+        document.getElementById('disp-jam-jalan').innerText = d.toLocaleTimeString('id-ID');
+        document.getElementById('disp-tgl-header').innerText = d.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    }, 1000);
+
+    function formatAngka(angka) { return angka.replace(/\D/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+    function fmt(el) { let v = el.value.replace(/\D/g,''); el.value = v ? new Intl.NumberFormat('id-ID').format(v) : ''; }
+    function toInt(v) { return parseInt(v.toString().replace(/\D/g,'')) || 0; }
+    function fmtN(v) { return new Intl.NumberFormat('id-ID').format(v); }
+
+    // ==================== PAGE ====================
+    function bukaPage(pg, el) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('page-' + pg).classList.add('active');
+        if (el) el.classList.add('active');
+        if(pg === 'history') filterRiwayat();
+        if(pg === 'report') hitungLaporan();
+        tutupModalPilihSaldo();
+        tutupModalTambahSaldo();
+    }
+
+    function pilihKat(k, el) { 
+        katAktif = k; 
+        document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active')); 
+        el.classList.add('active'); 
+    }
+
+    // ==================== TRANSAKSI ====================
+    function simpanTr() {
+        const nom = toInt(document.getElementById('t-nom').value);
+        const adm = toInt(document.getElementById('t-adm').value);
+        const ket = document.getElementById('t-ket').value;
+        if(!nom) { alert('Masukkan nominal!'); document.getElementById('t-nom').focus(); return; }
+        
+        const now = new Date();
+        const tgl = now.toISOString().split('T')[0];
+        const jam = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+        
+        if(katAktif === 'TARIK TUNAI') { db.cash -= nom; db.tarik += nom; }
+        else if(katAktif === 'AKSESORIS') { db.cash += nom; db.aks += nom; }
+        else { db.bank -= nom; db.cash += nom; }
+        
+        db.admin += adm;
+        db.tr.unshift({ tgl, jam, kat: katAktif, nom, adm, ket });
+        
+        refresh();
+        document.getElementById('t-nom').value = document.getElementById('t-adm').value = document.getElementById('t-ket').value = "";
+        document.getElementById('t-nom').focus();
+    }
+
+    // ==================== SALDO MODAL ====================
+    function bukaMenuSaldo() { document.getElementById('modalPilihSaldo').style.display = 'flex'; }
+    function tutupModalPilihSaldo() { document.getElementById('modalPilihSaldo').style.display = 'none'; }
+    
+    function pilihJenisSaldo(jenis) {
+        tambahSaldoJenis = jenis;
+        document.getElementById('modalTitle').innerText = jenis === 'Bank' ? 'Tambah Saldo Bank' : 'Tambah Saldo Cash';
+        document.getElementById('modalInput').value = '';
+        tutupModalPilihSaldo();
+        document.getElementById('modalTambahSaldo').style.display = 'flex';
+        document.getElementById('modalInput').focus();
+    }
+    
+    function prosesTambahSaldo() {
+        const raw = document.getElementById('modalInput').value.replace(/\./g, '');
+        if(raw) {
+            const nom = toInt(raw);
+            const now = new Date();
+            if(tambahSaldoJenis === 'Bank') db.bank += nom; else db.cash += nom;
+            db.ts.unshift({ tgl: now.toISOString().split('T')[0], jam: now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}), jenis: tambahSaldoJenis, nom });
+            refresh();
+        }
+        tutupModalTambahSaldo();
+    }
+    
+    function tutupModalTambahSaldo() { document.getElementById('modalTambahSaldo').style.display = 'none'; }
+
+    // ==================== FILTER ====================
+    function filterKategori(k, el) { filterKategoriAktif = k; updateFilterActive('#filter-transaksi', el); filterRiwayat(); }
+    function filterTambahSaldo(j, el) { filterTambahSaldoAktif = j; updateFilterActive('#filter-tambahsaldo', el); filterRiwayat(); }
+    
+    function updateFilterActive(selector, el) {
+        document.querySelectorAll(selector + ' .filter-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function filterRiwayat() {
+        const tgl = document.getElementById('f-tgl').value;
+        const cari = document.getElementById('f-cari').value.toLowerCase();
+        let hTr='', hTs='', totalNom=0, totalAdm=0, totalBank=0, totalCash=0;
+        
+        db.tr.filter(i => i.tgl===tgl)
+            .filter(i => filterKategoriAktif==='all' || i.kat===filterKategoriAktif)
+            .filter(i => i.kat.toLowerCase().includes(cari) || (i.ket && i.ket.toLowerCase().includes(cari)))
+            .forEach(i => {
+                hTr += `<tr><td>${i.jam}</td><td>${i.kat}</td><td>Rp ${fmtN(i.nom)}</td><td>Rp ${fmtN(i.adm)}</td></tr>`;
+                totalNom += i.nom; totalAdm += i.adm;
+            });
+        
+        db.ts.filter(i => i.tgl===tgl)
+            .filter(i => filterTambahSaldoAktif==='all' || i.jenis===filterTambahSaldoAktif)
+            .forEach(i => {
+                hTs += `<tr><td>${i.jam}</td><td>${i.jenis}</td><td>Rp ${fmtN(i.nom)}</td></tr>`;
+                if(i.jenis==='Bank') totalBank += i.nom; else totalCash += i.nom;
+            });
+        
+        document.getElementById('list-riwayat').innerHTML = hTr || "<tr><td colspan='4' style='text-align:center; padding:20px;'>Tidak ada transaksi</td></tr>";
+        document.getElementById('list-tambah-saldo').innerHTML = hTs || "<tr><td colspan='3' style='text-align:center; padding:20px;'>Tidak ada tambah saldo</td></tr>";
+        
+        document.getElementById('total-nominal').innerText = 'Rp ' + fmtN(totalNom);
+        document.getElementById('total-admin').innerText = 'Rp ' + fmtN(totalAdm);
+        document.getElementById('total-bank').innerText = 'Rp ' + fmtN(totalBank);
+        document.getElementById('total-cash').innerText = 'Rp ' + fmtN(totalCash);
+    }
+
+    // ==================== LAPORAN ====================
+    function hitungLaporan() {
+        const tgl = document.getElementById('f-tgl').value;
+        const fTr = db.tr.filter(x => x.tgl === tgl);
+        const fTs = db.ts.filter(x => x.tgl === tgl);
+        
+        const getSum = k => fTr.filter(x => x.kat === k).reduce((a,b) => a + b.nom, 0);
+        let sBank = getSum('BANK'), sFlip = getSum('FLIP'), sDana = getSum('DANA'), sApp = getSum('APP PULSA');
+        let sAks = getSum('AKSESORIS'), sTarik = getSum('TARIK TUNAI');
+        let totalPenjualan = sBank + sFlip + sDana + sApp;
+        
+        let tModCash = fTs.filter(x => x.jenis === 'Cash').reduce((a,b) => a + b.nom, 0);
+        let tModBank = fTs.filter(x => x.jenis === 'Bank').reduce((a,b) => a + b.nom, 0);
+        
+        let saldoCashAwal = db.cash - tModCash + sTarik - sAks;
+        let totalAdmin = fTr.reduce((a,b) => a + b.adm, 0);
+        let sisaCashSeluruhnya = db.cash + totalAdmin + sAks;
+
+        document.getElementById('rep-area').innerHTML = `
+            <div class="report-card">
+                <h3 style="text-align:center; margin:0 0 15px;">LAPORAN HARIAN</h3>
+                <p style="text-align:center; color:#888; margin-bottom:20px;">${tgl}</p>
+                
+                <div class="report-row"><span>Saldo Bank (Awal+Tambah)</span><b>Rp ${fmtN(tModBank)}</b></div>
+                <div class="report-row"><span>Saldo Cash Awal</span><b>Rp ${fmtN(saldoCashAwal)}</b></div>
+                <div class="report-row"><span>Sisa Saldo Sekarang</span><b>Rp ${fmtN(db.cash)}</b></div>
+                
+                <h4 style="margin:15px 0 10px;">Penjualan:</h4>
+                <div class="report-row"><span>Bank</span><b>Rp ${fmtN(sBank)}</b></div>
+                <div class="report-row"><span>Flip</span><b>Rp ${fmtN(sFlip)}</b></div>
+                <div class="report-row"><span>Dana</span><b>Rp ${fmtN(sDana)}</b></div>
+                <div class="report-row"><span>App Pulsa</span><b>Rp ${fmtN(sApp)}</b></div>
+                <div class="report-row" style="background:#f8f9fa; margin-top:5px;"><span>TOTAL</span><b>Rp ${fmtN(totalPenjualan)}</b></div>
+                
+                <div class="report-row" style="color:#e74c3c;"><span>Potongan Tarik Tunai</span><b>-Rp ${fmtN(sTarik)}</b></div>
+                <div class="report-row" style="background:#e8f5e9; margin:10px 0;"><span>SISA CASH TOKO</span><b>Rp ${fmtN(db.cash)}</b></div>
+                
+                <div class="report-row"><span>Total Admin</span><b>Rp ${fmtN(totalAdmin)}</b></div>
+                <div class="report-row"><span>Total Aksesoris</span><b>Rp ${fmtN(sAks)}</b></div>
+                
+                <div class="report-total-section">
+                    <div class="report-total-row">
+                        <span class="report-total-label">SISA CASH SELURUHNYA</span>
+                        <span class="report-total-value">Rp ${fmtN(sisaCashSeluruhnya)}</span>
+                    </div>
+                    <div class="report-footer">
+                        Cash: Rp ${fmtN(db.cash)} + Admin: Rp ${fmtN(totalAdmin)} + Aks: Rp ${fmtN(sAks)}
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn btn-orange" onclick="resetSaldo()"><i class="fa-solid fa-rotate-right"></i> Reset Saldo</button>
+                <button class="action-btn btn-green" onclick="shareLaporanPDF()"><i class="fa-solid fa-file-pdf"></i> Share PDF</button>
+                <button class="action-btn btn-red" onclick="resetData()"><i class="fa-solid fa-trash"></i> Reset Data</button>
+            </div>
+        `;
+    }
+
+    // ==================== SHARE PDF ====================
+    function shareLaporanPDF() {
+        const tgl = document.getElementById('f-tgl').value;
+        const fTr = db.tr.filter(x => x.tgl === tgl);
+        const fTs = db.ts.filter(x => x.tgl === tgl);
+        
+        const getSum = k => fTr.filter(x => x.kat === k).reduce((a,b) => a + b.nom, 0);
+        let sBank = getSum('BANK'), sFlip = getSum('FLIP'), sDana = getSum('DANA'), sApp = getSum('APP PULSA');
+        let sAks = getSum('AKSESORIS'), sTarik = getSum('TARIK TUNAI');
+        let totalPenjualan = sBank + sFlip + sDana + sApp;
+        
+        let tModCash = fTs.filter(x => x.jenis === 'Cash').reduce((a,b) => a + b.nom, 0);
+        let tModBank = fTs.filter(x => x.jenis === 'Bank').reduce((a,b) => a + b.nom, 0);
+        
+        let saldoCashAwal = db.cash - tModCash + sTarik - sAks;
+        let totalAdmin = fTr.reduce((a,b) => a + b.adm, 0);
+        let sisaCashSeluruhnya = db.cash + totalAdmin + sAks;
+
+        // Buat konten HTML yang akan dijadikan PDF
+        const kontenHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Alfaza Cell</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: white;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2b67f6;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #2b67f6;
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: 2px;
+        }
+        .header h2 {
+            color: #666;
+            margin: 5px 0 0;
+            font-size: 20px;
+            font-weight: normal;
+        }
+        .header .date {
+            color: #888;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .section {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #2b67f6;
+        }
+        .section h3 {
+            margin: 0 0 15px 0;
+            color: #2b67f6;
+            font-size: 18px;
+            border-bottom: 2px dashed #2b67f6;
+            padding-bottom: 8px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 15px;
+        }
+        .row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: 600;
+            color: #555;
+        }
+        .value {
+            font-weight: bold;
+            color: #2b67f6;
+        }
+        .total-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total-label {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .total-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+        .rincian {
+            font-size: 13px;
+            color: rgba(255,255,255,0.9);
+            margin-top: 12px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 12px;
+        }
+        .highlight {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+        .penjualan-total {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    
+.header{
+position:sticky;
+top:0;
+z-index:1000;
+background:#ffffff;
+}
+
+
+
+
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1>ALFAZA CELL</h1>
+        <h2>LAPORAN KEUANGAN HARIAN</h2>
+        <div class="date">${tgl}</div>
+    </div>
+
+    <div class="section">
+        <h3>📊 SALDO</h3>
+        <div class="row"><span class="label">Saldo Bank (Awal + Tambah)</span><span class="value">Rp ${fmtN(tModBank)}</span></div>
+        <div class="row"><span class="label">Saldo Cash Awal</span><span class="value">Rp ${fmtN(saldoCashAwal)}</span></div>
+        <div class="row"><span class="label">Sisa Saldo Sekarang</span><span class="value">Rp ${fmtN(db.cash)}</span></div>
+    </div>
+
+      <div class="section">
+        <h3>🛒 PENJUALAN HARI INI</h3>
+        <div class="row"><span class="label">Bank</span><span class="value">Rp ${fmtN(sBank)}</span></div>
+        <div class="row"><span class="label">Flip</span><span class="value">Rp ${fmtN(sFlip)}</span></div>
+        <div class="row"><span class="label">Dana</span><span class="value">Rp ${fmtN(sDana)}</span></div>
+        <div class="row"><span class="label">App Pulsa</span><span class="value">Rp ${fmtN(sApp)}</span></div>
+        <div class="penjualan-total">
+            <div class="row" style="border-bottom:none;">
+                <span class="label" style="font-size:16px;">TOTAL PENJUALAN</span>
+                <span class="value" style="font-size:18px; color:#2b67f6;">Rp ${fmtN(totalPenjualan)}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="font-size:16px; padding:15px 0;">
+        <span class="label">Potongan Tarik Tunai</span>
+        <span style="color:#e74c3c; font-weight:bold;">-Rp ${fmtN(sTarik)}</span>
+    </div>
+    
+    <div class="highlight">
+        SISA CASH TOKO<br>
+        Rp ${fmtN(db.cash)}
+    </div>
+
+    <div class="section">
+        <h3>➕ TAMBAHAN</h3>
+        <div class="row"><span class="label">Total Admin</span><span class="value">Rp ${fmtN(totalAdmin)}</span></div>
+        <div class="row"><span class="label">Total Aksesoris</span><span class="value">Rp ${fmtN(sAks)}</span></div>
+    </div>
+
+    <div class="total-section">
+        <div class="total-row">
+            <span class="total-label">SISA CASH SELURUHNYA</span>
+            <span class="total-value">Rp ${fmtN(sisaCashSeluruhnya)}</span>
+        </div>
+        <div class="rincian">
+            Cash: Rp ${fmtN(db.cash)} + Admin: Rp ${fmtN(totalAdmin)} + Aksesoris: Rp ${fmtN(sAks)}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Dibuat oleh ALFAZA CELL APP • ${new Date().toLocaleString('id-ID')}</p>
+        <p style="font-size:10px;">* Laporan ini digenerate secara otomatis</p>
+    </div>
+
+
+
+</body>
+</html>
+        `;
+
+        // Buat blob dari konten HTML
+        const blob = new Blob([kontenHTML], { type: 'text/html' });
+        
+        // Buat file dengan ekstensi .html
+        const file = new File([blob], `Laporan_Alfaza_${tgl}.html`, { type: 'text/html' });
+
+        // Share file HTML
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+                title: 'Laporan Harian Alfaza Cell',
+                files: [file]
+            }).catch(error => {
+                console.log('Error sharing:', error);
+                downloadFile(blob, `Laporan_Alfaza_${tgl}.html`);
+            });
+        } else if (navigator.share) {
+            // Fallback: share teks dengan link download
+            const url = URL.createObjectURL(blob);
+            navigator.share({
+                title: 'Laporan Harian Alfaza Cell',
+                text: `Download laporan: ${url}`
+            }).catch(() => {
+                downloadFile(blob, `Laporan_Alfaza_${tgl}.html`);
+            });
+        } else {
+            // Fallback: download
+            downloadFile(blob, `Laporan_Alfaza_${tgl}.html`);
+        }
+    }
+
+    function downloadFile(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('File laporan telah didownload. Anda bisa membagikannya melalui file manager.');
+    }
+
+    // ==================== REFRESH ====================
+    function refresh() {
+        if(!db) return;
+        document.getElementById('s-bank').innerText = "Rp " + fmtN(db.bank);
+        document.getElementById('s-cash').innerText = "Rp " + fmtN(db.cash);
+        document.getElementById('s-tarik').innerText = fmtN(db.tarik);
+        document.getElementById('s-aks').innerText = fmtN(db.aks);
+        document.getElementById('s-admin').innerText = fmtN(db.admin);
+        localStorage.setItem('alfaza_v14_4', JSON.stringify(mainDB));
+    }
+
+    // ==================== DATA FUNCTIONS ====================
+    function resetSaldo() {
+        if(confirm('Reset semua saldo ke 0?')) {
+            Object.keys(mainDB).forEach(k => { 
+                mainDB[k].bank = 0; mainDB[k].cash = 0; 
+                mainDB[k].tarik = 0; mainDB[k].aks = 0; mainDB[k].admin = 0; 
+            });
+            localStorage.setItem('alfaza_v14_4', JSON.stringify(mainDB));
+            refresh();
+            alert('Saldo telah direset');
+        }
+    }
+
+    function resetData() {
+        if(confirm('Hapus semua data transaksi?')) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    function logout() {
+        if(confirm('Anda yakin ingin keluar?')) {
+            location.reload();
+        }
+    }
+</script>
+
+
+
+
+</body>
+</html>
