@@ -626,7 +626,7 @@
                 <input type="text" id="f-cari" placeholder="🔍 Cari..." onkeyup="loadRiwayat()">
             </div>
 
-            <!-- Filter Transaksi -->
+            <!-- Filter Transaksi (Khusus Riwayat Transaksi) -->
             <div class="filter-grid" id="filter-transaksi">
                 <div class="filter-btn active" data-filter="all" onclick="filterKategori('all', this)">Semua</div>
                 <div class="filter-btn" data-filter="BANK" onclick="filterKategori('BANK', this)">🏦 Bank</div>
@@ -637,7 +637,7 @@
                 <div class="filter-btn" data-filter="AKSESORIS" onclick="filterKategori('AKSESORIS', this)">🎧 Aks</div>
             </div>
 
-            <!-- Tabel Transaksi -->
+            <!-- Tabel Riwayat Transaksi (HANYA TRANSAKSI) -->
             <div class="section-title">
                 <i class="fa-solid fa-receipt"></i> RIWAYAT TRANSAKSI
             </div>
@@ -655,8 +655,12 @@
                 <tbody id="list-riwayat"></tbody>
             </table>
 
-            <!-- Filter Tambah Saldo -->
-            <div class="section-title" style="margin-top:10px">
+            <!-- Pemisah dengan garis tipis -->
+            <div style="height: 15px;"></div>
+            <hr style="border: 1px solid #dde4f5; margin: 5px 0;">
+
+            <!-- Filter Tambah Saldo (Khusus Riwayat Tambah Saldo) -->
+            <div class="section-title" style="margin-top:5px">
                 <i class="fa-solid fa-circle-plus"></i> RIWAYAT TAMBAH SALDO
             </div>
             <div class="filter-grid" id="filter-tambahsaldo" style="margin-top:8px">
@@ -664,6 +668,8 @@
                 <div class="filter-btn" data-filter-ts="Bank" onclick="filterTambahSaldo('Bank', this)">🏦 Bank</div>
                 <div class="filter-btn" data-filter-ts="Cash" onclick="filterTambahSaldo('Cash', this)">💵 Cash</div>
             </div>
+
+            <!-- Tabel Riwayat Tambah Saldo (HANYA TAMBAH SALDO) -->
             <table class="history-table">
                 <thead>
                     <tr>
@@ -996,7 +1002,14 @@ async function prosesLogin() {
         
         if (isOwner) {
             await getAllSaldoKaryawan();
-            renderOwnerUI();
+            // Untuk owner, kita tetap pakai tampilan karyawan dulu
+            // Bisa dikembangkan lebih lanjut untuk dashboard owner
+            const saldo = await getSaldoFromServer('KASIR 01');
+            if (saldo) {
+                currentSaldo = saldo;
+                document.getElementById('disp-login').innerText = saldo.loginTime || '--:--';
+            }
+            renderKaryawanUI();
         } else {
             const saldo = await getSaldoFromServer(currentUser);
             if (saldo) {
@@ -1192,10 +1205,10 @@ async function loadRiwayat() {
     // Ambil data transaksi
     const dataTr = await getRiwayatFromServer(tgl, currentUser, false);
     
-    // Ambil data tambah saldo
+    // Ambil data tambah saldo (dari endpoint terpisah)
     const dataTs = await getTambahSaldoFromServer(tgl, currentUser);
     
-    // Filter dan tampilkan transaksi
+    // Filter dan tampilkan transaksi (HANYA transaksi, TIDAK termasuk tambah saldo)
     let filteredTr = dataTr
         .map((item, idx) => ({ ...item, no: idx + 1 }))
         .filter(item => filterKategoriAktif === 'all' || item.tipe === filterKategoriAktif)
@@ -1247,7 +1260,7 @@ async function loadRiwayat() {
     document.getElementById('list-riwayat').innerHTML = htmlTr || 
         `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-inbox"></i>Tidak ada transaksi</div></td></tr>`;
     
-    // Filter dan tampilkan tambah saldo
+    // Filter dan tampilkan tambah saldo (HANYA tambah saldo)
     let filteredTs = dataTs
         .map((item, idx) => ({ ...item, no: idx + 1 }))
         .filter(item => filterTambahSaldoAktif === 'all' || item.jenis === filterTambahSaldoAktif);
@@ -1359,6 +1372,11 @@ async function hitungLaporan() {
             <button type="button" class="action-btn" style="background:linear-gradient(135deg,#2b67f6,#1a4fc4);color:white;border:none;" onclick="shareLaporanGambar('${tgl}')">
                 <i class="fa-solid fa-camera"></i> Share Foto
             </button>
+            ${isOwner ? `
+            <button type="button" class="action-btn btn-orange" onclick="bukaModalEditSaldo()">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+            </button>
+            ` : ''}
         </div>
     `;
 }
@@ -1547,13 +1565,6 @@ async function shareLaporanGambar(tgl) {
 }
 
 // ==================== OWNER FUNCTIONS ====================
-function renderOwnerUI() {
-    // Ini akan dijalankan saat login sebagai owner
-    // Untuk sekarang, kita akan redirect ke halaman owner yang sudah ada di file asli
-    // Tapi karena kita menggunakan struktur 3 halaman, owner akan melihat dashboard sendiri
-    location.reload(); // Sementara, nanti bisa dikembangkan lebih lanjut
-}
-
 function bukaModalEditSaldo() {
     document.getElementById('modalEditSaldo').style.display = 'flex';
 }
@@ -1586,7 +1597,22 @@ async function prosesEditSaldo() {
     if (result.success) {
         showToast('✅ Saldo berhasil diupdate');
         await getAllSaldoKaryawan();
+        
+        // Refresh saldo jika sedang login sebagai kasir yang diedit
+        if (currentUser === kasir || currentUser === 'OWNER') {
+            const saldo = await getSaldoFromServer(kasir);
+            if (saldo && currentUser === kasir) {
+                currentSaldo = saldo;
+                renderKaryawanUI();
+            }
+        }
+        
         tutupModalEditSaldo();
+        
+        // Refresh laporan jika sedang di halaman laporan
+        if (document.getElementById('page-report').classList.contains('active')) {
+            hitungLaporan();
+        }
     } else {
         showToast('❌ Gagal update saldo');
     }
